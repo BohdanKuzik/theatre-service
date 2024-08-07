@@ -10,9 +10,7 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-RUN adduser \
-        --disabled-password \
-        --no-create-home \
-        my_user
+RUN addgroup --system my_group && \
+    adduser --system --ingroup my_group my_user
 
 USER my_user
