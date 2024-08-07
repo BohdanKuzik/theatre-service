@@ -8,3 +8,5 @@ drf-spectacular==0.22.1
 djangorestframework-simplejwt==5.2.0
 rest_framework_simplejwt==0.0.2
 pytz==2024.1
+psycopg2-binary==2.9.9
+steptools==20.5
