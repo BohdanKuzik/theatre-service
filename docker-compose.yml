@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   theatre:
     build:
@@ -43,6 +45,17 @@ services:
     depends_on:
       - theatre
       - redis
+
+  flower:
+    build:
+      context: .
+    ports:
+      - "5555:5555"
+    command: celery -A theatre_service flower --address=0.0.0.0 --port=5555
+    depends_on:
+      - celery
+    env_file:
+      - .env
 
 volumes:
   my_db:
