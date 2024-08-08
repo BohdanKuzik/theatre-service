@@ -9,6 +9,7 @@ from user.views import (
     CreateUserView,
     CreateTokenView,
     ManageUserView,
+    send_notification,
 )
 
 app_name = "user"
@@ -20,4 +21,5 @@ urlpatterns = [
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
+    path("send_notification/", send_notification, name="send_notification"),
 ]
