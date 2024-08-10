@@ -11,8 +11,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from datetime import timedelta
+import logging
 from dotenv import load_dotenv
 from pathlib import Path
+
+import psycopg2
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_celery_results',
+    'debug_toolbar',
     'theatre',
     'user',
     'rest_framework_simplejwt',
@@ -56,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'theatre_service.urls'
@@ -85,19 +90,38 @@ WSGI_APPLICATION = 'theatre_service.wsgi.application'
 
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('POSTGRES_HOST'),
-        'PORT': '5432',
-        'OPTIONS': {
-            'options': '-c client_encoding=UTF8',
-        },
-    }
-}
+conn = None
+
+try:
+    conn = psycopg2.connect(
+        dbname=os.environ.get('POSTGRES_DB'),
+        user=os.environ.get('POSTGRES_USER'),
+        password=os.environ.get('POSTGRES_PASSWORD'),
+        host=os.environ.get('POSTGRES_HOST'),
+        port='5432',
+    )
+except UnicodeDecodeError as e:
+    logging.error(f"UnicodeDecodeError: {e}")
+
+finally:
+    if conn:
+        conn.close()
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('POSTGRES_DB'),
+#         'USER': os.environ.get('POSTGRES_USER'),
+#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+#         'HOST': os.environ.get('POSTGRES_HOST'),
+#         'PORT': '5432',
+#         'OPTIONS': {
+#             'options': '-c client_encoding=UTF8',
+#         },
+#     }
+# }
+
 
 
 # Password validation
