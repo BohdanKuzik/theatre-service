@@ -1,4 +1,4 @@
-# Airport API
+# Theatre Service API
 An API for a theatre, the idea is to allow visitors of the Theatre to make Reservations online and choose needed seats, without going physically to the Theatre.
 
 # Features
