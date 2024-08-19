@@ -1,8 +1,10 @@
 from django.http import JsonResponse
+
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
+
 from .tasks import send_email_task
 
 from user.serializers import UserSerializer, AuthTokenSerializer
